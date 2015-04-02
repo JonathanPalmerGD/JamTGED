@@ -13,8 +13,9 @@ public class CameraController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {
-		if(transform.position.x >= 1.3 &&)
+	void LateUpdate () 
+	{
+		if(transform.position.x >= 1.3)
 		{
 
 		}
