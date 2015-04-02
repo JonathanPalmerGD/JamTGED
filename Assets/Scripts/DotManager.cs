@@ -18,7 +18,7 @@ public class DotManager : Singleton<DotManager>
 	{
 		GameObject dotPrefab = DotManager.Inst.FindOrLoadDot(dotName);
 
-		GameObject dot = (GameObject)GameObject.Instantiate(dot, dotPos, Quaternion.identity);
+		GameObject dot = (GameObject)GameObject.Instantiate(dotPrefab, dotPos, Quaternion.identity);
 
 		return dot;
 	}

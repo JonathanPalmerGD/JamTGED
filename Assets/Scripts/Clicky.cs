@@ -18,12 +18,12 @@ public class Clicky : MonoBehaviour
 	{
 		if(Input.GetKey(KeyCode.Q))
 		{
-			for (int i = 0; i < 30; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				GameObject dot = DotManager.Inst.FindOrLoadDot(names[Random.Range(0, names.Count)]);
 
-				Vector3 pos = new Vector3(Random.Range(-8, 8), Random.Range(-7, 7), Random.Range(-1, -30));
-				GameObject.Destroy(GameObject.Instantiate(dot, pos, Quaternion.identity), 5);
+				Vector3 pos = new Vector3(Random.Range(-8, 8), Random.Range(-7, 7), Random.Range(-1, -50));
+				GameObject.Destroy(GameObject.Instantiate(dot, pos, Quaternion.identity), 1);
 			}
 		}
 	}
