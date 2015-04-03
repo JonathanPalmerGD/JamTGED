@@ -23,7 +23,7 @@ public class AIBehavior : MonoBehaviour
         {
             case States.Initial:
                 {
-                    Debug.Log("INITIAL");
+					Debug.Log("INITIAL" + "\n");
                     if (aggression < 20.0)
                     {
                         state = States.Wander;
@@ -37,7 +37,7 @@ public class AIBehavior : MonoBehaviour
                 }
             case States.Seek:
                 {
-                    Debug.Log("SEEK");
+					Debug.Log("SEEK" + "\n");
                     Collider[] othersLikeMe = Physics.OverlapSphere(this.gameObject.transform.position, 50.0f).Where(dotCollider => dotCollider.gameObject != this.gameObject).ToArray();
                     GameObject nearest = GetNearestGameObject(othersLikeMe);
                     target = nearest;
@@ -46,14 +46,14 @@ public class AIBehavior : MonoBehaviour
                 }
             case States.Wait:
                 {
-                    Debug.Log("WAIT");
+					Debug.Log("WAIT" + "\n");
 
                     StartCoroutine(Wait(3));
                     break;
                 }
             case States.Wander:
                 {
-                    Debug.Log("WANDER");
+					Debug.Log("WANDER" + "\n");
                     Vector3 direction = new Vector3(Random.Range(-1,1), Random.Range(-1, 1)).normalized;
                     this.transform.position += direction * Time.deltaTime;
                     state = (aggression > 20.0f) ? States.Seek : States.Wait;
@@ -61,7 +61,7 @@ public class AIBehavior : MonoBehaviour
                 }
             case States.Move:
                 {
-                    Debug.Log("MOVE");
+					Debug.Log("MOVE" + "\n");
 
                     if (target == null)
                     {
@@ -71,16 +71,16 @@ public class AIBehavior : MonoBehaviour
 
                     var direction = Vector3.Normalize(target.transform.position - this.gameObject.transform.position);
                     var lookAngle = Vector3.Angle(this.transform.forward, direction);
-                    Debug.Log("LOOK ANGLE:" + lookAngle);
+                    Debug.Log("LOOK ANGLE:" + lookAngle +"\n");
                     if (lookAngle > 1.0f)
                     {
-                        Debug.Log("ROTATING");
+						Debug.Log("ROTATING\n");
                         var lookDirection =  Vector3.RotateTowards(this.gameObject.transform.forward, direction, 0.5f * Time.deltaTime, 0.0f);
                         this.transform.rotation = Quaternion.LookRotation(lookDirection);
                     }
                     else
                     {
-                        Debug.Log("MOVING TOWARDS");
+                        Debug.Log("MOVING TOWARDS\n");
                         var distance = Vector3.Distance(target.transform.position, this.gameObject.transform.position);
                         if (distance > (this.collider as SphereCollider).radius + target.GetComponent<SphereCollider>().radius)
                         {
@@ -94,15 +94,15 @@ public class AIBehavior : MonoBehaviour
                     break;
                 }
             case States.Group:
-                   Debug.Log("GROUP");
+				Debug.Log("GROUP" + "\n");
 
                 break;
             case States.Court:
-                    Debug.Log("COURT");
+				Debug.Log("COURT" + "\n");
                 break;
 
             case States.Attack:
-                Debug.Log("ATTACK");
+				Debug.Log("ATTACK" + "\n");
                 var ai = target.GetComponent<AIBehavior>();
                 if (ai.hitPoints <= 0)
                 {
@@ -118,7 +118,7 @@ public class AIBehavior : MonoBehaviour
                 break;
             case States.Death:
                 {
-                    Debug.Log("DEATH");
+					Debug.Log("DEATH" + "\n");
                     break;
                 }
         }
