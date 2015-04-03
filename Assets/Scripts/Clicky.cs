@@ -29,5 +29,11 @@ public class Clicky : MonoBehaviour
 				GameObject.Destroy(DotManager.Inst.CreateDot(names[Random.Range(0, names.Count)], pos), 1);
 			}
 		}
+
+		if (Input.GetKey(KeyCode.Q))
+		{
+			Vector3 pos = new Vector3(Random.Range(-45.0f, 45.0f), Random.Range(-45.0f, 45.0f), Random.Range(-1.0f, -5.0f));
+			GameObject.Destroy(DotManager.Inst.CreateDot(names[Random.Range(0, names.Count)], pos), 1);
+		}
 	}
 }

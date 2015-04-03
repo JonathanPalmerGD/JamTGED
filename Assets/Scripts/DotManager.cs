@@ -74,20 +74,20 @@ public class DotManager : Singleton<DotManager>
 	{
 		Material[] mats = Resources.LoadAll<Material>("Material/Eden");
 
-		for (int i = 0; i < mats.Length; i++)
+		/*for (int i = 0; i < mats.Length; i++)
 		{
 			matsLoaded.Add(mats[i].name);
 			matLib.Add(mats[i].name, mats[i]);
 		}
 
-		Debug.Log(mats.Length + "\n");
-		/*mats = Resources.LoadAll<Material>("Material/EndOfDays");
+		Debug.Log(mats.Length + "\n");*/
+		mats = Resources.LoadAll<Material>("Material/EndOfDays");
 
 		for (int i = 0; i < mats.Length; i++)
 		{
 			matsLoaded.Add(mats[i].name);
 			matLib.Add(mats[i].name, mats[i]);
-		}*/
+		}
 		Debug.Log(matLib.Count + "\n");
 	}
 
