@@ -13,7 +13,9 @@ public class Pane : MonoBehaviour
 
 	public SpriteRenderer spriteRend;
     private float happiness;
-    private int numDots;
+    private int numDotsIntitial;
+    private int numDotsCurrent;
+    private bool destroyed;
     private DotManager dManager;
     //public GameObject pane;
 
@@ -22,14 +24,18 @@ public class Pane : MonoBehaviour
 	{
 		spriteRend = this.GetComponent<SpriteRenderer>();
         happiness = 100.0f;
+        destroyed = false;
+        numDotsIntitial = DotManager.Inst.activeDots.Count;
 	}
 	
 	void Update () 
 	{
 
-        numDots = dManager.activeDots.Count;
+        numDotsCurrent = DotManager.Inst.activeDots.Count;
 
-        if (happiness <= 0)
+        int temp = numDotsCurrent - numDotsIntitial;
+
+        if (temp >= 50 && destroyed == false)
             DestroySelf();
 
 
@@ -41,9 +47,18 @@ public class Pane : MonoBehaviour
 
     void DestroySelf()
     {
-        Color tempColor = this.renderer.material.color;
-        tempColor.a = Mathf.MoveTowards(0, 1, (Time.deltaTime * 5));
-        this.renderer.material.color = tempColor;
+        //Color tempColor = this.renderer.material.color;
+        //tempColor.a = Mathf.MoveTowards(0, 1, (Time.deltaTime * 5));
+        //this.renderer.material.color = tempColor;
+
+        spriteRend.color = new Color(spriteRend.color.r, spriteRend.color.g, spriteRend.color.b, Mathf.Lerp(spriteRend.color.a, 0, Time.deltaTime));
+        Debug.Log(spriteRend.color.a);
+        if (spriteRend.color.a <= .02f)
+        {
+            Destroy(gameObject);
+            destroyed = true;
+            Debug.Log("destroyed");
+        }
     }
 
 
