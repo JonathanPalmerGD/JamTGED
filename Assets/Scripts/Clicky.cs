@@ -31,10 +31,18 @@ public class Clicky : MonoBehaviour
 			}*/
 		}
 
+		Vector3 pos = Vector3.zero;
+
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			Vector3 pos = new Vector3(Random.Range(-5.0f, 5.0f), 0, Random.Range(-5.0f, 5.0f));
+			pos = new Vector3(Random.Range(-5.0f, 5.0f), 0, Random.Range(-5.0f, 5.0f));
 			DotManager.Inst.CreateDot("Dot", pos, true);
+		}
+
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			pos = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(0.001f, .25f), Random.Range(-5.0f, 5.0f));
+			DotManager.Inst.CreatePane();
 		}
 	}
 }

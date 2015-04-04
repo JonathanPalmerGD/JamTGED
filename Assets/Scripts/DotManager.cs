@@ -18,6 +18,9 @@ public class DotManager : Singleton<DotManager>
 	public Dictionary<string, Material> edenEnvLib;
 	public Dictionary<string, Material> hellDotLib;
 	public Dictionary<string, Material> hellEnvLib;
+
+	public Dictionary<string, Sprite> edenSprLib;
+	public Dictionary<string, Sprite> hellSprLib;
 	public List<string> matsLoaded;
 
 	public List<GameObject> activeDots;
@@ -38,7 +41,11 @@ public class DotManager : Singleton<DotManager>
 		hellDotLib = new Dictionary<string, Material>();
 		hellEnvLib = new Dictionary<string, Material>();
 
+		edenSprLib = new Dictionary<string, Sprite>();
+		hellSprLib = new Dictionary<string, Sprite>();
+
 		LoadAllMats();
+		LoadAllSprites();
 	}
 
 	public GameObject CreateDot(string dotName, Vector3 dotPos, bool trackDot = true, bool isEden = true, bool isDot = true)
@@ -69,24 +76,30 @@ public class DotManager : Singleton<DotManager>
 		return dot;
 	}
 
-	public GameObject CreatePane()
+	public GameObject CreatePane(bool isEden = true)
 	{
-		GameObject newPane;
+		GameObject paneGO;
 
 		//Create a sprite at a random position.
-		newPane = (GameObject)GameObject.Instantiate(panePrefab);
-		newPane.transform.position = Vector3.zero;
+		paneGO = (GameObject)GameObject.Instantiate(panePrefab);
+		paneGO.transform.position = Vector3.zero;
+
+		Pane pane = paneGO.GetComponent<Pane>();
+
+		paneGO.transform.position = new Vector3(Random.Range(-25.0f, 25.0f), Random.Range(0.001f, .25f), Random.Range(-25.0f, 25.0f));
+
+		float scale = Random.Range(3, 15);
 
 		//Give it an appropriate size.
-
-		newPane.GetComponent<Pane>();
+		pane.transform.localScale = new Vector3(scale, scale, 1);
 
 		//Give it a random texture
+		pane.spriteRend.sprite = FindRandomSprite(isEden);
 
 		//Give it a random color.
+		pane.spriteRend.material = FindRandomMat(isEden, false);
 
-
-		return newPane;
+		return paneGO;
 	}
 
 	public GameObject FindOrLoadDot(string dotName)
@@ -168,6 +181,29 @@ public class DotManager : Singleton<DotManager>
 		Debug.Log(matLib.Count + "\n");*/
 
 		#endregion
+	}
+
+	public void LoadAllSprites()
+	{
+		Sprite[] sprites;
+
+		#region Eden Mat Loading
+		sprites = Resources.LoadAll<Sprite>("Shapes/Eden");
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			//matsLoaded.Add(mats[i].name);
+			edenSprLib.Add(sprites[i].name, sprites[i]);
+		}
+
+		sprites = Resources.LoadAll<Sprite>("Shapes/EndOfDays");
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			//matsLoaded.Add(mats[i].name);
+			hellSprLib.Add(sprites[i].name, sprites[i]);
+		}
+		#endregion
+
+		Debug.Log("Eden Sprites: " + edenSprLib.Count + "\nEnd Sprites: " + hellSprLib.Count + "\n");
 	}
 
 	public Material FindOrLoadMat(string matName = "BrightRed", bool isEden = true, bool isDot = true)
@@ -266,11 +302,31 @@ public class DotManager : Singleton<DotManager>
 		}
 	}
 
+	public Sprite FindRandomSprite(bool isEden = true)
+	{
+		if (isEden)
+		{
+			return FindRandomSpriteFromDictionary(edenSprLib);
+			
+		}
+		else
+		{
+			return FindRandomSpriteFromDictionary(hellSprLib);
+		}
+	}
+
 	public Material FindRandomMatFromDictionary(Dictionary<string, Material> dict)
 	{
 		List<Material> matList = dict.Values.ToList();
 
 		return matList[Random.Range(0, matList.Count)];
+	}
+
+	public Sprite FindRandomSpriteFromDictionary(Dictionary<string, Sprite> dict)
+	{
+		List<Sprite> spriteList = dict.Values.ToList();
+
+		return spriteList[Random.Range(0, spriteList.Count)];
 	}
 
 	public void Update()

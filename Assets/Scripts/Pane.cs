@@ -15,7 +15,10 @@ public class Pane : MonoBehaviour
 
 	void Start () 
 	{
-		spriteRend = this.GetComponent<SpriteRenderer>();
+		if (!spriteRend)
+		{
+			spriteRend = this.GetComponent<SpriteRenderer>();
+		}
 	}
 	
 	void Update () 
