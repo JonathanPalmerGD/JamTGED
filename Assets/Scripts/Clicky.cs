@@ -33,8 +33,8 @@ public class Clicky : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			Vector3 pos = new Vector3(Random.Range(-45.0f, 45.0f), Random.Range(-45.0f, 45.0f), Random.Range(-1.0f, -5.0f));
-			DotManager.Inst.CreateDot("Dot", pos);
+			Vector3 pos = new Vector3(Random.Range(-5.0f, 5.0f), 0, Random.Range(-5.0f, 5.0f));
+			DotManager.Inst.CreateDot("Dot", pos, true);
 		}
 	}
 }
