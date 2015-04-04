@@ -13,7 +13,6 @@ public class CameraController : MonoBehaviour {
 	private bool checkX = true;
 	private bool checkZ = true;
 
-
 	private float offsetX;
 	private float offsetZ;
 
