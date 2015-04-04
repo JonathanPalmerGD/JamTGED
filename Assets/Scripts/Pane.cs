@@ -17,15 +17,18 @@ public class Pane : MonoBehaviour
     private int numDotsCurrent;
     private bool destroyed;
     private DotManager dManager;
+    private bool faddedIn;
     //public GameObject pane;
 
 
 	void Start () 
 	{
+        faddedIn = false;
 		spriteRend = this.GetComponent<SpriteRenderer>();
         happiness = 100.0f;
         destroyed = false;
         numDotsIntitial = DotManager.Inst.activeDots.Count;
+        spriteRend.color = new Color(spriteRend.color.r, spriteRend.color.g, spriteRend.color.b, 0);
 	}
 	
 	void Update () 
@@ -35,8 +38,25 @@ public class Pane : MonoBehaviour
 
         int temp = numDotsCurrent - numDotsIntitial;
 
-        if (temp >= 50 && destroyed == false)
-            DestroySelf();
+        if (faddedIn == false)
+        {
+            spriteRend.color = new Color(spriteRend.color.r, spriteRend.color.g, spriteRend.color.b, Mathf.Lerp(spriteRend.color.a, 1, Time.deltaTime));
+
+            Debug.Log(spriteRend.color.a);
+            if (spriteRend.color.a >= .98f)
+            {
+                faddedIn = true;
+            }
+
+        }
+        else
+        {
+
+            if (temp >= 50 && destroyed == false)
+                DestroySelf();
+
+        }
+
 
 
 
