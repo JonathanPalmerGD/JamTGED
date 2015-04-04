@@ -12,14 +12,41 @@ public class Pane : MonoBehaviour
 	//
 
 	public SpriteRenderer spriteRend;
+    private float happiness;
+    private int numDots;
+    private DotManager dManager;
+    //public GameObject pane;
+
 
 	void Start () 
 	{
 		spriteRend = this.GetComponent<SpriteRenderer>();
+        happiness = 100.0f;
 	}
 	
 	void Update () 
 	{
-	
+
+        numDots = dManager.activeDots.Count;
+
+        if (happiness <= 0)
+            DestroySelf();
+
+
+
+
+
+
 	}
+
+    void DestroySelf()
+    {
+        Color tempColor = this.renderer.material.color;
+        tempColor.a = Mathf.MoveTowards(0, 1, (Time.deltaTime * 5));
+        this.renderer.material.color = tempColor;
+    }
+
+
+
+
 }
