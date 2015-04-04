@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-public enum States { Initial, Seek, Wait, Wander, Move, Group, Court, Attack, Death };
+public enum States { Initial, Seek, Wait, Wander, Move, Group, Court, Attack, Death, Destroy};
 
 public class AIBehavior : MonoBehaviour 
 {
@@ -106,24 +106,21 @@ public class AIBehavior : MonoBehaviour
                 break;
 
             case States.Attack:
-				Debug.Log("ATTACK" + "\n");
-                var ai = target.GetComponent<AIBehavior>();
-                if (ai.hitPoints <= 0)
                 {
-                    ai.state = States.Death;
-                    target = null;
-                    aggression += 15.0f;
-                    state = States.Seek;
+                    Debug.Log("ATTACK" + "\n");
+                    StartCoroutine(Attack());
+                    break;
                 }
-                else
-                {
-                    ai.hitPoints--;
-                }
-                break;
             case States.Death:
                 {
 					Debug.Log("DEATH" + "\n");
                     StartCoroutine(Die(1.75f));
+                    break;
+                }
+            case States.Destroy:
+                {
+                    Debug.Log("DESTROY" + "\n");
+                    // Wait for manager to destroy me :(
                     break;
                 }
         }
@@ -151,6 +148,21 @@ public class AIBehavior : MonoBehaviour
         state = States.Wander;
     }
 
+    IEnumerator Attack()
+    {
+        var ai = target.GetComponent<AIBehavior>();
+        while (ai.hitPoints > 0)
+        {
+            ai.hitPoints--;
+            yield return null;
+        }
+
+        ai.state = States.Death;
+        target = null;
+        aggression += 15.0f;
+        state = States.Seek;
+    }
+
     IEnumerator Die(float duration)
     {
         float time = duration;
@@ -163,5 +175,7 @@ public class AIBehavior : MonoBehaviour
             time -= Time.deltaTime;
             yield return null;
         }
+
+        state = States.Destroy;
     }
 }
