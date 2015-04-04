@@ -9,6 +9,8 @@ public class DotManager : Singleton<DotManager>
 	public Dictionary<string, GameObject> dotLib;
 	public List<string> dotsLoaded;
 
+	public GameObject panePrefab;
+
 	//All of the assets
 	public Dictionary<string, Material> matLib;
 
@@ -24,6 +26,7 @@ public class DotManager : Singleton<DotManager>
 
 	public void Init()
 	{
+		panePrefab = Resources.Load<GameObject>("PanePrefab");
 		dotLib = new Dictionary<string, GameObject>();
 		matLib = new Dictionary<string, Material>();
 		dotsLoaded = new List<string>();
@@ -64,6 +67,26 @@ public class DotManager : Singleton<DotManager>
 		}
 
 		return dot;
+	}
+
+	public GameObject CreatePane()
+	{
+		GameObject newPane;
+
+		//Create a sprite at a random position.
+		newPane = (GameObject)GameObject.Instantiate(panePrefab);
+		newPane.transform.position = Vector3.zero;
+
+		//Give it an appropriate size.
+
+		newPane.GetComponent<Pane>();
+
+		//Give it a random texture
+
+		//Give it a random color.
+
+
+		return newPane;
 	}
 
 	public GameObject FindOrLoadDot(string dotName)
