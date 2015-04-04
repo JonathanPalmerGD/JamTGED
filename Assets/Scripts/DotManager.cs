@@ -372,7 +372,7 @@ public class DotManager : Singleton<DotManager>
 		//Lerp to the color
 		background.color = new Color(Mathf.Lerp(background.color.r, targColor.r, Time.deltaTime / 15), Mathf.Lerp(background.color.g, targColor.g, Time.deltaTime / 15), Mathf.Lerp(background.color.b, targColor.b, Time.deltaTime), 1);
 
-		Debug.LogWarning("[DotManager]\n\tThere are " + activeDots.Count + " active dots.\n");
+		//Debug.LogWarning("[DotManager]\n\tThere are " + activeDots.Count + " active dots.\n");
 		if (activeDots.Count > 400)
 		{
 			Application.LoadLevel(Application.loadedLevel + 1);
