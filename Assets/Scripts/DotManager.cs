@@ -123,12 +123,6 @@ public class DotManager : Singleton<DotManager>
 
 	public void Update()
 	{
-        var deadDots = activeDots.Where(dot => dot.GetComponent<AIBehavior>().state == States.Destroy).ToList();
-        foreach (GameObject dot in deadDots)
-        {
-            GameObject.Destroy(dot, 0.5f);
-        }
-
 		for (int i = 0; i < activeDots.Count; i++)
 		{
 			if (activeDots[i] == null)
