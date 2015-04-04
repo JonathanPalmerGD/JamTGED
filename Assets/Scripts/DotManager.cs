@@ -62,20 +62,23 @@ public class DotManager : Singleton<DotManager>
 
 		if (activeDots.Count < 250)
 		{
-			dot.renderer.material = FindRandomMat(true, false);
+			dot.renderer.material = FindRandomMat(true, true);
 
+			CreatePane(true);
 			//Debug.Log("Eden\n");
 		}
 		else
 		{
 			//Debug.Log("End\n");
-			dot.renderer.material = FindRandomMat(false, false);
+			dot.renderer.material = FindRandomMat(false, true);
+			CreatePane(false);
 		}
 
 		if (trackDot)
 		{
 			activeDots.Add(dot);
 		}
+
 
 		return dot;
 	}
