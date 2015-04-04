@@ -30,6 +30,10 @@ public class AIBehavior : MonoBehaviour
                     }
                     else if (aggression < 50.0)
                     {
+                        
+                    }
+                    else
+                    {
                         state = States.Seek;
                     }
 
@@ -119,6 +123,7 @@ public class AIBehavior : MonoBehaviour
             case States.Death:
                 {
 					Debug.Log("DEATH" + "\n");
+                    StartCoroutine(Die(1.75f));
                     break;
                 }
         }
@@ -144,5 +149,19 @@ public class AIBehavior : MonoBehaviour
         yield return new WaitForSeconds(duration);
         aggression++;
         state = States.Wander;
+    }
+
+    IEnumerator Die(float duration)
+    {
+        float time = duration;
+        Vector3 finalScale = new Vector3(0.0f, 0.0f, 0.0f);
+        Vector3 startScale = this.transform.localScale;
+
+        while (time >= 0) 
+        {
+            this.transform.localScale = (time / duration) * startScale;
+            time -= Time.deltaTime;
+            yield return null;
+        }
     }
 }
