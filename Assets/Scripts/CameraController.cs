@@ -1,25 +1,65 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+
 
 public class CameraController : MonoBehaviour {
 
 	public GameObject player;
-	private Vector3 offset;
+	public GameObject plane;
+	public GameObject camSizePlane;
 
-	// Use this for initialization
-	void Start () {
-		offset = transform.position;
-	
-	}
-	
-	// Update is called once per frame
-	void LateUpdate () 
+	private float halfScaleX;
+	private float halfScaleY;
+	private bool checkX = true;
+	private bool checkZ = true;
+
+	private float offsetX;
+	private float offsetZ;
+
+	void Start ()
 	{
-		if(transform.position.x >= 1.3)
-		{
+		halfScaleX = Mathf.Abs(plane.transform.localScale.x/2);
+		halfScaleY = Mathf.Abs(plane.transform.localScale.y/2);
+	}
 
+	void Update () 
+	{
+		// always use 16:9
+
+		offsetX = (Mathf.Abs(player.transform.position.x)) + (camSizePlane.transform.localScale.x/2);
+		offsetZ = (Mathf.Abs(player.transform.position.z)) + (camSizePlane.transform.localScale.y/2);
+
+		if(offsetX < halfScaleX) // inside boundary x
+		{
+			checkX = true;
 		}
-		transform.position = player.transform.position + offset;
-	
+		else // outside boundary x
+		{
+			checkX = false;
+		}
+
+		if(offsetZ < halfScaleY) // inside boundary z or y
+		{
+			checkZ = true;
+		}
+		else // inside boundary z or y
+		{
+			checkZ = false;
+		}
+
+		if(checkX == true && checkZ == true)
+		{
+			this.transform.position = new Vector3(player.transform.position.x,this.transform.position.y,player.transform.position.z);
+		}
+		else if(checkX == true && checkZ == false)
+		{
+			this.transform.position = new Vector3(player.transform.position.x,this.transform.position.y,this.transform.position.z);
+		}
+		else if(checkX == false && checkZ == true)
+		{
+			this.transform.position = new Vector3(this.transform.position.x,this.transform.position.y,player.transform.position.z);
+		}
+		else
+			this.transform.position = new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z);
 	}
 }
