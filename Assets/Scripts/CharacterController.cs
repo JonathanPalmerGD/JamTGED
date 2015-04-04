@@ -20,8 +20,6 @@ public class CharacterController : MonoBehaviour {
 		
 		halfScaleX = Mathf.Abs((plane.transform.localScale.x/2) - 0.75f);
 		halfScaleY = Mathf.Abs((plane.transform.localScale.y/2) - 0.75f);
-		Debug.Log(halfScaleX);
-		Debug.Log(halfScaleY);
 
 	}
 	
