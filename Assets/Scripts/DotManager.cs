@@ -60,7 +60,7 @@ public class DotManager : Singleton<DotManager>
 
 		//dot.renderer.material = matLib[matsLoaded[Random.Range(0, matsLoaded.Count)]];
 
-		if (activeDots.Count < 15)
+		if (activeDots.Count < 250)
 		{
 			dot.renderer.material = FindRandomMat(true, false);
 
@@ -92,9 +92,10 @@ public class DotManager : Singleton<DotManager>
 
 		paneGO.transform.position = new Vector3(Random.Range(-25.0f, 25.0f), Random.Range(0.001f, .25f), Random.Range(-25.0f, 25.0f));
 
-		paneGO.transform.rotation.SetEulerAngles(new Vector3(90, Random.Range(0, 360), 0));
+		//paneGO.transform.rotation.SetEulerAngles(new Vector3(90, Random.Range(0, 360), 0));
+		paneGO.transform.RotateAround(Vector3.up, Random.Range(0, 360));
 
-		float scale = Random.Range(3, 15);
+		float scale = Random.Range(.5f, 1f);
 
 		//Give it an appropriate size.
 		pane.transform.localScale = new Vector3(scale, scale, 1);
