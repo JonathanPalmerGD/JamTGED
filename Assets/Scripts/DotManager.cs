@@ -27,6 +27,8 @@ public class DotManager : Singleton<DotManager>
 
 	public List<Sprite> backgroundSprites;
 
+	public SpriteRenderer background; 
+
 	public void Init()
 	{
 		panePrefab = Resources.Load<GameObject>("PanePrefab");
@@ -43,6 +45,8 @@ public class DotManager : Singleton<DotManager>
 
 		edenSprLib = new Dictionary<string, Sprite>();
 		hellSprLib = new Dictionary<string, Sprite>();
+
+		background = GameObject.Find("BackgroundGameCanvas").GetComponent<SpriteRenderer>();
 
 		LoadAllMats();
 		LoadAllSprites();
@@ -88,6 +92,8 @@ public class DotManager : Singleton<DotManager>
 
 		paneGO.transform.position = new Vector3(Random.Range(-25.0f, 25.0f), Random.Range(0.001f, .25f), Random.Range(-25.0f, 25.0f));
 
+		paneGO.transform.rotation.SetEulerAngles(new Vector3(90, Random.Range(0, 360), 0));
+
 		float scale = Random.Range(3, 15);
 
 		//Give it an appropriate size.
@@ -97,7 +103,8 @@ public class DotManager : Singleton<DotManager>
 		pane.spriteRend.sprite = FindRandomSprite(isEden);
 
 		//Give it a random color.
-		pane.spriteRend.material = FindRandomMat(isEden, false);
+		//pane.spriteRend.material = FindRandomMat(isEden, false);
+		pane.spriteRend.color = FindRandomMat(isEden, false).color;
 
 		return paneGO;
 	}
@@ -203,7 +210,7 @@ public class DotManager : Singleton<DotManager>
 		}
 		#endregion
 
-		Debug.Log("Eden Sprites: " + edenSprLib.Count + "\nEnd Sprites: " + hellSprLib.Count + "\n");
+		//Debug.Log("Eden Sprites: " + edenSprLib.Count + "\nEnd Sprites: " + hellSprLib.Count + "\n");
 	}
 
 	public Material FindOrLoadMat(string matName = "BrightRed", bool isEden = true, bool isDot = true)
@@ -331,6 +338,46 @@ public class DotManager : Singleton<DotManager>
 
 	public void Update()
 	{
+		Color targColor = Color.white;
+		if (activeDots.Count < 30)
+		{
+			background.color = new Color(.95f, .95f, .95f, 1);
+		}
+		else if (activeDots.Count < 80)
+		{
+			targColor = new Color(.75f, .95f, .65f, 1);
+		}
+		else if (activeDots.Count < 130)
+		{
+			targColor = new Color(.45f, .55f, .85f, 1);
+		}
+		else if (activeDots.Count < 180)
+		{
+			targColor = new Color(.95f, .35f, .45f, 1);
+		}
+		else if (activeDots.Count < 250)
+		{
+			targColor = new Color(.55f, .55f, .55f, 1);
+		}
+		else if (activeDots.Count < 320)
+		{
+			targColor = new Color(.25f, .35f, .25f, 1);
+		}
+		else
+		{
+			targColor = new Color(.05f, .05f, .05f, 1);
+		}
+
+		//Lerp to the color
+		background.color = new Color(Mathf.Lerp(background.color.r, targColor.r, Time.deltaTime / 15), Mathf.Lerp(background.color.g, targColor.g, Time.deltaTime / 15), Mathf.Lerp(background.color.b, targColor.b, Time.deltaTime), 1);
+
+		Debug.LogWarning("[DotManager]\n\tThere are " + activeDots.Count + " active dots.\n");
+		if (activeDots.Count > 400)
+		{
+			Application.LoadLevel(Application.loadedLevel + 1);
+		}
+
+
 		for (int i = 0; i < activeDots.Count; i++)
 		{
 			if (activeDots[i] == null)

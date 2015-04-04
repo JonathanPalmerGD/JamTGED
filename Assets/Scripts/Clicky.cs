@@ -33,16 +33,26 @@ public class Clicky : MonoBehaviour
 
 		Vector3 pos = Vector3.zero;
 
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			pos = new Vector3(Random.Range(-5.0f, 5.0f), 0, Random.Range(-5.0f, 5.0f));
-			DotManager.Inst.CreateDot("Dot", pos, true);
-		}
-
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
-			pos = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(0.001f, .25f), Random.Range(-5.0f, 5.0f));
+			pos = new Vector3(Random.Range(-25.0f, 25.0f), 0, Random.Range(-25.0f, 25.0f));
+			DotManager.Inst.CreateDot("Dot", pos, true);
+			pos = new Vector3(Random.Range(-25.0f, 25.0f), 0, Random.Range(-25.0f, 25.0f));
+			DotManager.Inst.CreateDot("Dot", pos, true);
+			pos = new Vector3(Random.Range(-25.0f, 25.0f), 0, Random.Range(-25.0f, 25.0f));
+			DotManager.Inst.CreateDot("Dot", pos, true);
+			pos = new Vector3(Random.Range(-25.0f, 25.0f), 0, Random.Range(-25.0f, 25.0f));
+			DotManager.Inst.CreateDot("Dot", pos, true);
+			pos = new Vector3(Random.Range(-25.0f, 25.0f), 0, Random.Range(-25.0f, 25.0f));
+			DotManager.Inst.CreateDot("Dot", pos, true);
+		}
+		if (Input.GetKey(KeyCode.E))
+		{
 			DotManager.Inst.CreatePane();
+		}
+		if (Input.GetKey(KeyCode.R))
+		{
+			DotManager.Inst.CreatePane(false);
 		}
 	}
 }
