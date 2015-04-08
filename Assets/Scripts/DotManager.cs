@@ -344,27 +344,27 @@ public class DotManager : Singleton<DotManager>
 	public void Update()
 	{
 		Color targColor = Color.white;
-		if (activeDots.Count < 30)
+		if (activeDots.Count < 15)
 		{
 			background.color = new Color(.95f, .95f, .95f, 1);
 		}
-		else if (activeDots.Count < 80)
+		else if (activeDots.Count < 30)
 		{
 			targColor = new Color(.75f, .95f, .65f, 1);
 		}
-		else if (activeDots.Count < 130)
+		else if (activeDots.Count < 80)
 		{
 			targColor = new Color(.45f, .55f, .85f, 1);
 		}
-		else if (activeDots.Count < 180)
+		else if (activeDots.Count < 130)
 		{
 			targColor = new Color(.95f, .35f, .45f, 1);
 		}
-		else if (activeDots.Count < 250)
+		else if (activeDots.Count < 180)
 		{
 			targColor = new Color(.55f, .55f, .55f, 1);
 		}
-		else if (activeDots.Count < 320)
+		else if (activeDots.Count < 250)
 		{
 			targColor = new Color(.25f, .35f, .25f, 1);
 		}

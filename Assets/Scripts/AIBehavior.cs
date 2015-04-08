@@ -27,34 +27,29 @@ public class AIBehavior : MonoBehaviour
         {
             case States.Initial:
                 {
-					Debug.Log("INITIAL" + "\n");
                     StartCoroutine(Birth(2.0f));
                     break;
                 }
             case States.Seek:
                 {
-					Debug.Log("SEEK" + "\n");
                     StartCoroutine(Seek(50.0f));
                     break;
                 }
             case States.Wait:
                 {
-					Debug.Log("WAIT" + "\n");
                     StartCoroutine(Wait(3));
                     break;
                 }
             case States.Wander:
                 {
-					Debug.Log("WANDER" + "\n");
-                    Vector3 direction = new Vector3(Random.Range(-1,1), Random.Range(-1, 1)).normalized;
+                    Vector3 direction = new Vector3(Random.Range(-1,1), 0.0f, Random.Range(-1, 1)).normalized;
                     this.transform.position += direction * Time.deltaTime;
                     aggression = Mathf.Max(minAggro, aggression - 1);
-                    state = (aggression < 20.0f) ? States.Seek : States.Wait;
+                    state = (aggression < 20.0f) ? States.Seek : States.Wander;
                     break;
                 }
             case States.Move:
                 {
-					Debug.Log("MOVE" + "\n");
                     if (target == null)
                     {
                         aggression = Mathf.Min(maxAggro, aggression + 1);
@@ -79,7 +74,7 @@ public class AIBehavior : MonoBehaviour
                             else
                             {
                                 var ai = target.GetComponent<AIBehavior>();
-                                state = (Mathf.Abs(aggression - ai.aggression) > 5.0) ? States.Attack : States.Court;
+                                state = (Mathf.Abs(aggression - ai.aggression) > 50.0) ? States.Attack : States.Court;
                                 ai.state = state;
                             }
                         }
@@ -87,34 +82,28 @@ public class AIBehavior : MonoBehaviour
                     break;
                 }
             case States.Retreat:
-                Debug.Log("RETREAT" + "\n");
                 StartCoroutine(Retreat(2.0f));
                 break;
             case States.Group:
-				Debug.Log("GROUP" + "\n");
 
                 break;
             case States.Court:
                 { 
-				    Debug.Log("COURT" + "\n");
                     Court();
                     break;
                 }
             case States.Attack:
                 {
-                    Debug.Log("ATTACK" + "\n");
                     StartCoroutine(Attack());
                     break;
                 }
             case States.Death:
                 {
-					Debug.Log("DEATH" + "\n");
                     StartCoroutine(Die(1.75f));
                     break;
                 }
             case States.Destroy:
                 {
-                    Debug.Log("DESTROY" + "\n");
                     GameObject.Destroy(this.gameObject);
                     break;
                 }
@@ -175,10 +164,11 @@ public class AIBehavior : MonoBehaviour
     {
         while (radius < maxSeekRadius && target == null) {
               Collider[] othersLikeMe = Physics.OverlapSphere(this.gameObject.transform.position, radius)
-                        .Where(dotCollider => (dotCollider.gameObject != this.gameObject) && 
-                            dotCollider.gameObject.GetComponent<AIBehavior>().state == state || 
+                        .Where(dotCollider => ((dotCollider.gameObject != this.gameObject) && 
+							(dotCollider.GetComponent<AIBehavior>() != null)) &&
+                            (dotCollider.gameObject.GetComponent<AIBehavior>().state == state || 
                             dotCollider.gameObject.GetComponent<AIBehavior>().state == States.Wait ||
-                            dotCollider.gameObject.GetComponent<AIBehavior>().state == States.Wander)
+                            dotCollider.gameObject.GetComponent<AIBehavior>().state == States.Wander))
                         .ToArray();
               target = GetNearestGameObject(othersLikeMe);
               radius *= 2;
@@ -230,19 +220,23 @@ public class AIBehavior : MonoBehaviour
 
     IEnumerator Retreat(float duration)
     {
-        var thisToTarget = (target.transform.position - this.transform.position);
-        var startPosition = this.transform.position;
-        var finalPosition = this.transform.position - ((thisToTarget).normalized * this.gameObject.GetComponent<SphereCollider>().radius * 16);
-        var time = 0.0f;
-        while (time < duration)
-        {
-            var t = Mathf.Min(duration, (time / duration));
-            this.transform.position = (1 - t) * startPosition + (t * finalPosition);
-            time += Time.deltaTime;
-            yield return null;
-        }
+		if (target != null)
+		{
+			var thisToTarget = (target.transform.position - this.transform.position);
+			var startPosition = this.transform.position;
+			var finalPosition = this.transform.position - ((thisToTarget).normalized * this.gameObject.GetComponent<SphereCollider>().radius * 8);
+			var time = 0.0f;
+			while (time < duration)
+			{
+				var t = Mathf.Min(duration, (time / duration));
+				this.transform.position = (1 - t) * startPosition + (t * finalPosition);
+				time += Time.deltaTime;
+				yield return null;
+			}
 
-        target = null;
+			target = null;
+		}
+        
         state = States.Wander;
     }
 
@@ -255,7 +249,6 @@ public class AIBehavior : MonoBehaviour
         else
         {
             var dot = DotManager.Inst.CreateDot("Dot", (target.transform.position + this.transform.position) * 0.5f);
-            Debug.Log(dot);
             dot.transform.localScale = Vector3.zero;
             dot.GetComponent<AIBehavior>().state = States.Initial;
             dot.GetComponent<AIBehavior>().aggression = (aggression + target.GetComponent<AIBehavior>().aggression) * 0.5f;
